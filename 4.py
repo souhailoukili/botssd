@@ -148,7 +148,8 @@ def format_player_info(player_info, lang='ar'):
 @bot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
     if message.chat.id in GROUP_CHAT_IDS:
-        bot.reply_to(message, "أرسل /Get <UID> لجلب معلومات الحساب."
+        bot.reply_to(message, "أرسل /Get <UID> لجلب معلومات الحساب.\n"
+                              "أرسل /BH <رقم الحساب> للتحقق من حالة البند.\n")
     else:
         bot.reply_to(message, "مرحبًا! أرسل لي رسالة تحتوي على '#' للحصول على معلومات الخريطة.")
 @bot.message_handler(commands=['Get'])
@@ -238,39 +239,6 @@ def check_status(message, player_id):
     except requests.RequestException as e:
         bot.reply_to(message, f"Failed to fetch data from the API: {e}")
 
-# Fonction pour lire le nombre d'utilisations du bot
-def read_usage_count(user_id):
-    try:
-        with open('usage_stats.txt', 'r') as file:
-            for line in file:
-                line_parts = line.strip().split(',')
-                if int(line_parts[0]) == user_id:
-                    return int(line_parts[1])
-    except FileNotFoundError:
-        return 0
-    except IndexError:
-        return 0
-    return 0
-
-# Fonction pour mettre à jour le nombre d'utilisations du bot
-def update_usage_count(user_id):
-    try:
-        with open('usage_stats.txt', 'r+') as file:
-            lines = file.readlines()
-            file.seek(0)
-            found = False
-            for line in lines:
-                line_parts = line.strip().split(',')
-                if int(line_parts[0]) == user_id:
-                    line_parts[1] = str(int(line_parts[1]) + 1)
-                    found = True
-                file.write(','.join(line_parts) + '\n')
-            if not found:
-                file.write(f"{user_id},1\n")
-            file.truncate()
-    except FileNotFoundError:
-        with open('usage_stats.txt', 'w') as file:
-            file.write(f"{user_id},1\n")
 
 # Commande /start
 @bot.message_handler(commands=['start'])
@@ -282,23 +250,9 @@ def send_welcome(message):
 def check_command(message):
 
     player_id = message.text.split()[1]
-    update_usage_count(message.from_user.id)
     check_status(message, player_id)
 
-# Commande /stats
-@bot.message_handler(commands=['stats'])
-def show_stats(message):
-    try:
-        user_id = message.from_user.id
-        username = message.from_user.username
-        first_name = message.from_user.first_name
-        last_name = message.from_user.last_name
 
-        usage_count = read_usage_count(user_id)
-        stats_message = f"ℹ️ Statistiques d'utilisation pour @{username} ({user_id}):\n\nNombre d'utilisations du bot: {usage_count}\nPrénom: {first_name}\nNom de famille: {last_name}"
-        bot.reply_to(message, stats_message)
-    except FileNotFoundError:
-        bot.reply_to(message, "Aucune statistique d'utilisation disponible pour le moment.")
 
 def get_wishlist(uid, password, server):
     url = f"https://ff.samsedrain.com.np/wishlist?uid={uid}&password={password}&server={server}"
@@ -308,7 +262,7 @@ def get_wishlist(uid, password, server):
     else:
         return None
 
-@bot.message_handler(commands=['start'])
+@bot.message_handler(commands=['help'])
 def start(message):
     bot.reply_to(message, "مرحبا بك! يمكنك استخدام الأمر /BW تتبعه رقم الحساب لجلب قائمة الأمنيات الخاصة بك.")
 
