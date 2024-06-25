@@ -5,11 +5,11 @@ from datetime import datetime
 import  urllib.parse
 
 # استبدل بالتوكن الفعلي الخاص بك
-TOKEN = "7398587700:AAFt2GhEuo44o_ILmT7D3THmecAell8vuag"
+TOKEN = "7263112829:AAEEmqWJTFAuLhRsinRXtXoTbnktTG8CM-U"
 bot = telebot.TeleBot(TOKEN)
 
 # قائمة معرفات المجموعات
-GROUP_CHAT_IDS = [-1002180331015]  # أضف معرفات المجموعات الأخرى هنا
+GROUP_CHAT_IDS = [-1002136444842]  # أضف معرفات المجموعات الأخرى هنا
 password = '0529aizen003fshy'
 
 def get_player_info(uid):
