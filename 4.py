@@ -148,7 +148,7 @@ def format_player_info(player_info, lang='ar'):
 @bot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
     if message.chat.id in GROUP_CHAT_IDS:
-        bot.reply_to(message, "أرسل /Get <UID> لجلب معلومات الحساب.\n"
+        bot.reply_to(message, "أرسل /Get <UID> لجلب معلومات الحساب."
     else:
         bot.reply_to(message, "مرحبًا! أرسل لي رسالة تحتوي على '#' للحصول على معلومات الخريطة.")
 @bot.message_handler(commands=['Get'])
